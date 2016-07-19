@@ -1,25 +1,26 @@
 if(!file.exists("./data/raw.zip")) source("Download_Dataset.R")
 
-library(dplyr)
-library(tidyr)
+require("knitr")
+require("dplyr")
+require("tidyr")
 
-#reference tables
-features <- read.table("./data/UCI HAR Dataset/features.txt", col.names = c("featureID","feature_name"), colClasses = c("numeric","character"))
-activity_labels <- read.table("./data/UCI HAR Dataset/activity_labels.txt", col.names = c("actID","activity"))
+
 
 ## Step 1 - (merge the training and test data set) ----------------------------------------
+
+# import reference data
+features <- read.table("./data/UCI HAR Dataset/features.txt", col.names = c("featureID","feature_name"), colClasses = c("numeric","character"))
+activity_labels <- read.table("./data/UCI HAR Dataset/activity_labels.txt", col.names = c("actID","activity"))
 
 # import the test dataset and add subject and activity identifiers to each observation
 subject_test <- read.table("./data/UCI HAR Dataset/test/subject_test.txt", col.names = "subjectID")
 y_test <- read.table("./data/UCI HAR Dataset/test/y_test.txt", col.names = "actID")
 x_test <- read.table("./data/UCI HAR Dataset/test/X_test.txt", col.names = features$feature_name)
 
-
 # import the train dataset and add subject and activity identifiers to each observation
 subject_train <- read.table("./data/UCI HAR Dataset/train/subject_train.txt", col.names = "subjectID")
 y_train <- read.table("./data/UCI HAR Dataset/train/y_train.txt", col.names = "actID")
 x_train <- read.table("./data/UCI HAR Dataset/train/X_train.txt", col.names = features$feature_name)
-
 
 # merge the test and train observation dataset into 1
 x_combined <- rbind(x_test,x_train)
